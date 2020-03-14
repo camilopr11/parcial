@@ -1,4 +1,3 @@
 # PAGES
 
-Desarrollo de las paginas del aplicativo web del módulo de gestión de la publicación
-
+Desarrollo de las paginas del aplicativo para la gestión del índice de masa corporal de usuarios
