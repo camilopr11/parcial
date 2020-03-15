@@ -6,9 +6,7 @@
       
       <h1 class="title">Bienvenido</h1>
       <h2 class="subtitle">Gestión de indíce de masa corporal</h2>
-      <b-button href="/add" variant="primary"><b-img center src="@/static/images/add.png" width="50" height="50"></b-img>Agregar usuario</b-button>
-      <b-button href="/edit" variant="warning"><b-img center src="@/static/images/edit.png" width="50" height="50"></b-img>Modificar Usuarios</b-button>
-      <b-button href="/search" variant="danger"><b-img center src="@/static/images/search.png" width="50" height="50"></b-img>Listar Usuarios</b-button>
+      <b-button href="/crud" variant="success"><b-img center src="@/static/images/login.png" width="50" height="50"></b-img>Ingresar a plataforma</b-button>
     </div>
   </div>
 </template>

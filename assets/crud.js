@@ -1,87 +1,212 @@
 export default {
-    data() {
-        return {
-            mensaje: "CRUD De Usuarios",
-            enEdicion: false,
-            usuario: {
-                id: "",
-                tipoid: "",
-                nombres: "",
-                apellidos: "",
-                correo: "",
-                peso: "",
-                estatura: "",
-                imc: "",
-                acciones: true
-            },
-            lista_usuarios: [
-                {
-                    id: "1193442227",
-                    tipoid: "CC",
-                    nombres: "Camilo Andres",
-                    apellidos: "Pastrana Rivas",
-                    correo: "camilop.rivas@gmail.com",
-                    peso: "85",
-                    estatura: "1.67",
-                    imc: "",
-                    acciones: true
-                }
-              ],
-              opciones_listaId: [
-                { value: null, text: "Seleccione el tipo de identificacion", disabled: true },
-                { value: "CC", text: "CC" },
-                { value: "CE", text: "CE" },
-                { value: "RN", text: "RN" },
-                { value: "TI", text: "TI" }
-            ],
+  created() {
+    this.storage();
+  },
+  data() {
+    return {
+      enEdicion: false,
+      opciones_listaId: [
+        { value: null, text: "Seleccione el tipo de identificacion", disabled: true },
+        { value: "CC", text: "CC" },
+        { value: "CE", text: "CE" },
+        { value: "RN", text: "RN" },
+        { value: "TI", text: "TI" }
+      ],
+      id: '',
+      tipoid: '',
+      nombres: '',
+      apellidos: '',
+      correo: '',
+      peso: '',
+      estatura: '',
+      imc: '',
+      edit: false,
+      delete: false,
+      cancel: false,
+      id2: 0,
+      ind: 0,
+      estado: '',
+      usuarios: [],
 
-              opciones_estados: [
-                { value: null, text: "Seleccione el tipo de estado", disabled: true },
-                { value: "Sobrepeso", text: "Sobrepeso" },
-                { value: "Peso normal", text: "Peso normal" }
-                
-            ]
-            
-        };
+    };
+  },
+  methods: {
+    addUser: function () {
+
+      this.imc = (parseFloat(this.peso)) / ((parseFloat(this.estatura)) * (parseFloat(this.estatura))) + " ";
+      this.usuarios.push({
+
+        id: this.id,
+        tipoid: this.tipoid,
+        nombres: this.nombres,
+        apellidos: this.apellidos,
+        correo: this.correo,
+        peso: this.peso,
+        estatura: this.estatura,
+        imc: this.imc
+      });
+      localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
+      this.id = '';
+      this.tipoid = '';
+      this.nombres = '';
+      this.apellidos = '';
+      this.correo = '';
+      this.peso = '';
+      this.estatura = '';
+      this.imc = '';
+
     },
-    methods: {
-        crearUsuario() {
-            this.usuario.imc = (parseFloat(this.usuario.peso))/((parseFloat(this.usuario.estatura))*(parseFloat(this.usuario.estatura))) + " ";
-            this.lista_usuarios.push(this.usuario);
-            
-        },
-        eliminarUsuario({ item }) {
-            let posicion = this.lista_usuarios.findIndex(
-                usuario => usuario.id == item.id
-            );
-            this.lista_usuarios.splice(posicion, 1);
-        },
-        cargarUsuario({ item }) {
-            let task = this.lista_usuarios.find(
-                usuario => usuario.id == item.id
-            );
-            this.enEdicion = true;
-            this.usuario = Object.assign({}, task);
-            this.usuario.imc = (parseFloat(this.usuario.peso))/((parseFloat(this.usuario.estatura))*(parseFloat(this.usuario.estatura))) + " ";
-        },
-        actualizarUsuario() {
-            let posicion = this.lista_usuarios.findIndex(
-                usuario => usuario.id == this.usuario.id
-            );
-            this.usuario.imc = (parseFloat(this.usuario.peso))/((parseFloat(this.usuario.estatura))*(parseFloat(this.usuario.estatura))) + " ";
-            this.lista_usuarios.splice(posicion, 1, this.usuario);
-            this.usuario = {
-                id: "",
-                tipoid: "",
-                nombres: "",
-                apellidos: "",
-                correo: "",
-                peso: "",
-                estatura: "",
-                imc: "",
-                acciones: true
-            };
+    editUser: function (t, i) {
+      this.enEdicion = true;
+      this.edit = !this.edit;
+      this.id = t.id;
+      this.tipoid = t.tipoid;
+      this.nombres = t.nombres;
+      this.apellidos = t.apellidos;
+      this.correo = t.correo;
+      this.peso = t.peso;
+      this.estatura = t.estatura;
+      this.imc = t.imc;
+      this.ind = i;
+    },
+    updateUser: function (e) {
+      e.preventDefault();
+      this.enEdicion = false;
+      this.edit = !this.edit;
+      this.imc = (parseFloat(this.peso)) / ((parseFloat(this.estatura)) * (parseFloat(this.estatura))) + " ";
+      let usersdb = {
+
+        id: this.id,
+        tipoid: this.tipoid,
+        nombres: this.nombres,
+        apellidos: this.apellidos,
+        correo: this.correo,
+        peso: this.peso,
+        estatura: this.estatura,
+        imc: this.imc
+      }
+      this.usuarios[this.ind] = usersdb;
+
+      localStorage.setItem("usuarios", JSON.stringify(this.usuarios));
+      let usersDB = JSON.parse(localStorage.getItem('usuarios'));
+      this.usuarios = usersDB;
+
+
+      this.id = '';
+      this.tipoid = '';
+      this.nombres = '';
+      this.apellidos = '';
+      this.correo = '';
+      this.peso = '';
+      this.estatura = '';
+      this.imc = '';
+    },
+    cancelTask: function (e) {
+      e.preventDefault();
+      this.id = '';
+      this.tipoid = '';
+      this.nombres = '';
+      this.apellidos = '';
+      this.correo = '';
+      this.peso = '';
+      this.estatura = '';
+      this.imc = '';
+      this.edit = !this.edit;
+      this.enEdicion = false;
+    },
+    deleteUser: function (i) {
+      this.usuarios.splice(i, 1);
+      localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
+    },
+    status: function (t, i) {
+      this.imc = t.imc;
+      if (parseFloat(this.imc) < 18.5) {
+        this.estado = '';
+        this.$bvModal.msgBoxOk('Peso insuficiente', {
+          title: 'AVISO:',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'success',
+          headerClass: 'p-2 border-bottom-0',
+          footerClass: 'p-2 border-top-0',
+          centered: true
+        })
+          .then(value => {
+            this.boxTwo = value
+          })
+          .catch(err => {
+            // An error occurred
+          })
+      } else if ((parseFloat(this.imc) >= 18.5) && (parseFloat(this.imc) <= 24.9)) {
+        this.estado = '';
+        this.$bvModal.msgBoxOk('Peso normal', {
+          title: 'AVISO:',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'success',
+          headerClass: 'p-2 border-bottom-0',
+          footerClass: 'p-2 border-top-0',
+          centered: true
+        })
+          .then(value => {
+            this.boxTwo = value
+          })
+          .catch(err => {
+            // An error occurred
+          })
+
+
+      } else if ((parseFloat(this.imc) >= 25.0) && (parseFloat(this.imc) <= 29.9)) {
+        this.estado = '';
+        this.$bvModal.msgBoxOk('Sobrepeso', {
+          title: 'AVISO:',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'success',
+          headerClass: 'p-2 border-bottom-0',
+          footerClass: 'p-2 border-top-0',
+          centered: true
+        })
+          .then(value => {
+            this.boxTwo = value
+          })
+          .catch(err => {
+            // An error occurred
+          })
+          
+      }else if (parseFloat(this.imc) >= 30.0) {
+        this.estado = '';
+        this.$bvModal.msgBoxOk('Obesidad', {
+          title: 'AVISO:',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'success',
+          headerClass: 'p-2 border-bottom-0',
+          footerClass: 'p-2 border-top-0',
+          centered: true
+        })
+          .then(value => {
+            this.boxTwo = value
+          })
+          .catch(err => {
+            // An error occurred
+          })
+
+      }
+
+
+    },
+    storage() {
+      if (process.browser) {
+        let usersDB = JSON.parse(localStorage.getItem('usuarios'));
+        if (usersDB === null) {
+          this.usuarios = [];
+
+        } else {
+          this.usuarios = usersDB;
 
         }
+      }
     }
+  },
 };
