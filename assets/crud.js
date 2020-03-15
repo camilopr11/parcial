@@ -26,34 +26,60 @@ export default {
       id2: 0,
       ind: 0,
       estado: '',
+      existe: false,
       usuarios: [],
 
     };
   },
   methods: {
     addUser: function () {
-
+      this.existe = false;
       this.imc = (parseFloat(this.peso)) / ((parseFloat(this.estatura)) * (parseFloat(this.estatura))) + " ";
-      this.usuarios.push({
+      for (var i = 0; i < this.usuarios.length; i+=1) {
+        if (this.usuarios[i].id === this.id){
+          this.existe = true;
+        }
+      }
+      if (this.existe === false){
+        this.usuarios.push({
 
-        id: this.id,
-        tipoid: this.tipoid,
-        nombres: this.nombres,
-        apellidos: this.apellidos,
-        correo: this.correo,
-        peso: this.peso,
-        estatura: this.estatura,
-        imc: this.imc
-      });
-      localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
-      this.id = '';
-      this.tipoid = '';
-      this.nombres = '';
-      this.apellidos = '';
-      this.correo = '';
-      this.peso = '';
-      this.estatura = '';
-      this.imc = '';
+          id: this.id,
+          tipoid: this.tipoid,
+          nombres: this.nombres,
+          apellidos: this.apellidos,
+          correo: this.correo,
+          peso: this.peso,
+          estatura: this.estatura,
+          imc: this.imc
+        });
+        localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
+        this.id = '';
+        this.tipoid = '';
+        this.nombres = '';
+        this.apellidos = '';
+        this.correo = '';
+        this.peso = '';
+        this.estatura = '';
+        this.imc = '';
+      }else{
+        this.estado = '';
+        this.$bvModal.msgBoxOk('Este usuario ya existe, ingrese otra id', {
+          title: 'ALERTA:',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'success',
+          headerClass: 'p-2 border-bottom-0',
+          footerClass: 'p-2 border-top-0',
+          centered: true
+        })
+          .then(value => {
+            this.boxTwo = value
+          })
+          .catch(err => {
+            // An error occurred
+          })
+      }
+      
 
     },
     editUser: function (t, i) {

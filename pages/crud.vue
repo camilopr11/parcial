@@ -11,7 +11,7 @@
             <b-form action="javascript:void(0)" @submit="addUser()">
               <br>
               <b-form-group label="Identificación" label-for="ide">
-              <b-form-select v-model="tipoid" :options="opciones_listaId"></b-form-select>
+              <b-form-select required="true" v-model="tipoid" :options="opciones_listaId"></b-form-select>
               <br>
              <br>
                 
@@ -21,6 +21,7 @@
                   v-model="id"
                   placeholder="Ingrese Id de usuario"
                   id="id"
+                  required="true"
                 />
               </b-form-group>
 
@@ -31,6 +32,7 @@
                   v-model="nombres"
                   placeholder="Ingrese nombres"
                   id="nombres"
+                  required="true"
                 />
               </b-form-group>
 
@@ -41,6 +43,7 @@
                   v-model="apellidos"
                   placeholder="Ingrese apellidos"
                   id="apellidos"
+                  required="true"
                 />
               </b-form-group>
 
@@ -51,6 +54,7 @@
                   v-model="correo"
                   placeholder="Ingrese correo"
                   id="correo"
+                  required="true"
                 />
               </b-form-group>
 
@@ -61,6 +65,7 @@
                   v-model="peso"
                   placeholder="Ingrese peso (kg)"
                   id="peso"
+                  required="true"
                 />
               </b-form-group>
 
@@ -71,6 +76,7 @@
                   v-model="estatura"
                   placeholder="Ingrese estatura (metros)"
                   id="estatura"
+                  required="true"
                 />
               </b-form-group>
 
